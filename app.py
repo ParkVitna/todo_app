@@ -1,12 +1,12 @@
 import streamlit as st
 
 st.title('🚗 Easy Compare My CAR 🚜')
-st.header('')
 
-# 더미 차량 DB
+# 더미 데이터
+# 차량 이미지 예시
 example_car_image = 'https://media.istockphoto.com/id/1150931120/ko/%EC%82%AC%EC%A7%84/%EC%9D%BC%EB%B0%98-%EC%BB%B4%ED%8C%A9%ED%8A%B8-%ED%99%94%EC%9D%B4%ED%8A%B8-%EC%9E%90%EB%8F%99%EC%B0%A8-%EC%A0%84%EB%A9%B4-%EC%B8%A1%EB%A9%B4%EC%9D%98-3d-%EA%B7%B8%EB%A6%BC.jpg?s=612x612&w=0&k=20&c=evtR5CTByAQWEj-b_C0CeAyT6LQJlCxvo8J702KEhaI='
 
-# 차량 데이터 예시 (더미 데이터)
+# 차량 데이터 예시
 dummy_data1_car_brand = 'brand1'
 dummy_data1_car_model = 'model1'
 dummy_data1 =  ["세단", "아반떼", "준중형", "2023-01", "가솔린", "15km/L", "500km", "5성"]
@@ -18,7 +18,7 @@ dummy_data3_car_model = 'model3'
 dummy_data3 =  ["해치백", "i30", "소형", "2021-06", "가솔린", "14km/L", "450km", "4.5성"]
 
 select_car_dialog_data = {
-    '현대': ['아반떼', '투싼', 'i30', 'A', 'B', 'C', 'D'],
+    '현대': ['아반떼', '투싼', 'i30'],
     '기아': ['K3', 'K5', '스포티지'],
     '제네시스': ['G70', 'G80', 'GV80']
 }
@@ -49,7 +49,7 @@ def clicked_select_car_button(i):
 # 차량 선택 다이얼로그
 @st.dialog("차량을 선택해주세요.")
 def select_car_dialog(index):
-    st.write(f'차량{index+1} 브랜드 선택')
+    st.write(f'🚗차량 선택{index+1} : 브랜드')
     brands = list(select_car_dialog_data.keys())
 
     # 브랜드 5개씩 n줄
@@ -66,7 +66,7 @@ def select_car_dialog(index):
     # 브랜드 선택 후, 모델 선택
     selected_brand = st.session_state.get(f'selected_brand_{index}')
     if selected_brand:
-        st.write(f'차량{index+1} {selected_brand} 모델 선택')
+        st.write(f'🚗차량 선택{index+1} : {selected_brand} 모델')
 
         model = st.selectbox(
             f'{selected_brand} 모델 리스트',
@@ -103,6 +103,11 @@ def select_car_dialog(index):
 # UI START
 
 # 스펙별로 한 줄씩 그리기
+title, car1, car2, car3 = st.columns(4)
+car1.image("https://static.streamlit.io/examples/cat.jpg")
+car2.image("https://static.streamlit.io/examples/dog.jpg")
+car3.image("https://static.streamlit.io/examples/owl.jpg")
+
 for idx, spec in enumerate(specs):
     row = st.columns(4)  # 항목명 + 3대 차량 비교용
     row[0].write(f"**{spec}**")  # 맨 왼쪽에 항목명
@@ -120,7 +125,7 @@ for idx, spec in enumerate(specs):
         else:
             row[car_idx + 1].write("-")  # 데이터 없으면 비워두기
 
-st.divider()
+    st.divider()
 
 # 초기화 버튼
 if st.button("비교 초기화"):
