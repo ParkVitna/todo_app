@@ -35,7 +35,7 @@ def clicked_select_car_button(i):
 # 차량 선택 다이얼로그
 def select_car_dialog(i):
     if st.session_state.get(f'open_dialog_{i}', False):
-        with st.dialog("차량을 선택해주세요."):
+        with st.modal("차량을 선택해주세요."):
             st.subheader("🚗 브랜드 선택")
             col1, col2, col3 = st.columns(3)
 
