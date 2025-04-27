@@ -18,7 +18,7 @@ dummy_data3_car_model = 'model3'
 dummy_data3 =  ["해치백", "i30", "소형", "2021-06", "가솔린", "14km/L", "450km", "4.5성"]
 
 select_car_dialog_data = {
-    '현대': ['아반떼', '쏘나타', '투싼'],
+    '현대': ['아반떼', '투싼', 'i30', 'A', 'B', 'C', 'D'],
     '기아': ['K3', 'K5', '스포티지'],
     '제네시스': ['G70', 'G80', 'GV80']
 }
@@ -53,6 +53,7 @@ def select_car_dialog(index):
     brands = list(select_car_dialog_data.keys())
 
     # 브랜드 5개씩 n줄
+    # Todo 브랜드 로고 이미지 넣기
     for i in range(0, len(brands), 5):
         cols = st.columns(5)
 
@@ -75,11 +76,12 @@ def select_car_dialog(index):
 
         if st.button('선택 완료', key=f'confirm_select_{index}'):
             # 더미 데이터 매핑
+            # Todo 데이터 반복문으로 매핑
             if model == "아반떼":
                 car_data = [f'{selected_brand} {model}'] + dummy_data1
-            elif model == "쏘나타":
-                car_data = [f'{selected_brand} {model}'] + dummy_data2
             elif model == "투싼":
+                car_data = [f'{selected_brand} {model}'] + dummy_data2
+            elif model == "i30":
                 car_data = [f'{selected_brand} {model}'] + dummy_data3
             else:
                 car_data = [f'{selected_brand} {model}'] + ["-", "-", "-", "-", "-", "-", "-", "-"]
@@ -96,10 +98,6 @@ def select_car_dialog(index):
             # 닫기
             st.session_state[f'open_dialog_{index}'] = False
             st.rerun()
-
-
-
-
 
 
 # UI START
@@ -122,6 +120,7 @@ for idx, spec in enumerate(specs):
         else:
             row[car_idx + 1].write("-")  # 데이터 없으면 비워두기
 
+st.divider()
 
 # 초기화 버튼
 if st.button("비교 초기화"):
@@ -130,3 +129,5 @@ if st.button("비교 초기화"):
     for i in range(3):
         st.session_state[f'open_dialog_{i}'] = False
         st.session_state.pop(f'selected_brand_{i}', None)
+
+    st.rerun()
