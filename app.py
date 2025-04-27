@@ -18,7 +18,6 @@ select_car_dialog_data = {
     '제네시스': ['G70', 'G80', 'GV80']
 }
 
-
 # choosed_cars 초기화
 if 'choosed_cars' not in st.session_state:
     st.session_state.choosed_cars = [] #Car 클래스 객체
@@ -34,9 +33,10 @@ for i in range(3):
         st.session_state[f'selected_brand_{i}'] = False
 
 # selected_image_i 초기화
+default_image = 'default_car_image.png'
 for i in range(3):
     if f'selected_image_{i}' not in st.session_state:
-        st.session_state[f'selected_image_{i}'] = False
+        st.session_state[f'selected_image_{i}'] = default_image
 
 
 
@@ -111,8 +111,8 @@ def select_car_dialog(index):
 # 스펙별로 한 줄씩 그리기
 title, car1, car2, car3 = st.columns(4, vertical_alignment='bottom')
 car1.image('car_sample_image.jpeg')
-car2.image(st.session_state.get('selected_image_1'))
-car3.image(st.session_state.get(f'selected_image_2'))
+car2.image(st.session_state.get('selected_image_1', default_image))
+car3.image(st.session_state.get('selected_image_2', default_image))
 
 for idx, spec in enumerate(specs):
     row = st.columns(4)  # 항목명 + 3대 차량 비교용
