@@ -110,10 +110,11 @@ def select_car_dialog(index):
 
 # 스펙별로 한 줄씩 그리기
 title, car1, car2, car3 = st.columns(4, vertical_alignment='bottom')
-car1.image('car_sample_image.jpeg')
+car1.image(st.session_state.get('selected_image_0', default_image))
 car2.image(st.session_state.get('selected_image_1', default_image))
 car3.image(st.session_state.get('selected_image_2', default_image))
 
+# Todo 연비, 안전성 등 비교 가능한 스펙은 비교 대상 중 가장 높은 곳에 👍 표시
 for idx, spec in enumerate(specs):
     row = st.columns(4)  # 항목명 + 3대 차량 비교용
     row[0].write(f"**{spec}**")  # 맨 왼쪽에 항목명
@@ -140,5 +141,6 @@ if st.button("비교 초기화"):
     for i in range(3):
         st.session_state[f'open_dialog_{i}'] = False
         st.session_state.pop(f'selected_brand_{i}', None)
+        st.session_state.pop(f'selected_image_{i}', default_image)
 
     st.rerun()
