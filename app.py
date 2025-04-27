@@ -34,7 +34,7 @@ cols = st.columns(9)
 
 for i, col in enumerate(cols):
     tile = col.container(height=300)
-    tile.text = (col_titles[i] + col.text())
+    tile.text = col_titles[i]
 
 row1 = st.columns(3)
 row2 = st.columns(3)
