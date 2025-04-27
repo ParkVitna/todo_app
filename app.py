@@ -5,44 +5,32 @@ st.title('🚗 Easy Compare My CAR 🚜')
 # 더미 차량 DB
 example_car_image = 'https://media.istockphoto.com/id/1150931120/ko/%EC%82%AC%EC%A7%84/%EC%9D%BC%EB%B0%98-%EC%BB%B4%ED%8C%A9%ED%8A%B8-%ED%99%94%EC%9D%B4%ED%8A%B8-%EC%9E%90%EB%8F%99%EC%B0%A8-%EC%A0%84%EB%A9%B4-%EC%B8%A1%EB%A9%B4%EC%9D%98-3d-%EA%B7%B8%EB%A6%BC.jpg?s=612x612&w=0&k=20&c=evtR5CTByAQWEj-b_C0CeAyT6LQJlCxvo8J702KEhaI='
 
-car_db = {
-    "현대": {
-        "아반떼": {"fuel": "가솔린", "mileage": "15km/L", "release_date": "2023-01", "image": example_car_image},
-        "소나타": {"fuel": "디젤", "mileage": "13km/L", "release_date": "2022-06", "image": example_car_image},
-    },
-    "기아": {
-        "K3": {"fuel": "가솔린", "mileage": "14km/L", "release_date": "2022-08", "image": example_car_image},
-        "K5": {"fuel": "하이브리드", "mileage": "18km/L", "release_date": "2021-11", "image": example_car_image},
-    },
-    "BMW": {
-        "320i": {"fuel": "가솔린", "mileage": "12km/L", "release_date": "2022-05", "image":example_car_image},
-        "520d": {"fuel": "디젤", "mileage": "16km/L", "release_date": "2021-03", "image": example_car_image},
-    },
-    "벤츠": {
-        "C클래스": {"fuel": "가솔린", "mileage": "11km/L", "release_date": "2023-02", "image": example_car_image},
-        "E클래스": {"fuel": "디젤", "mileage": "14km/L", "release_date": "2020-09", "image": example_car_image},
-    }
-}
+# 차량 데이터 예시 (더미 데이터) - 나중에 선택된 차량들 정보로 채우면 됨
+# 4열: 차량1, 차량2, 차량3, 차량4 (필요에 따라 갯수 조절)
+dummy_data = [
+    ["세단", "아반떼", "준중형", "2023-01", "가솔린", "15km/L", "500km", "5성"],
+    ["SUV", "투싼", "중형", "2022-08", "디젤", "13km/L", "600km", "4성"],
+    ["해치백", "i30", "소형", "2021-06", "가솔린", "14km/L", "450km", "4.5성"],
+    ["SUV", "스포티지", "중형", "2023-03", "하이브리드", "18km/L", "700km", "5성"]
+]
 
 # 초기 차량 리스트 (최대 3대)
 if "cars" not in st.session_state:
     st.session_state.cars = []
 
-# 비교 목록
-col_titles = ['선택', '차량명', '차종', '출시일', '연료', '연비', '주행거리', '안정성', '가격']
-cols = st.columns(9)
+# 비교 목록 리스트
+specs = ['선택', '차량명', '차종', '출시일', '연료', '연비', '주행거리', '안정성', '가격']
 
-for i, col in enumerate(cols):
-    tile = col.container(height=300)
-    tile.text = col_titles[i]
+# 스펙별로 한 줄씩 그리기
+for idx, spec in enumerate(specs):
+    row = st.columns(5)  # 항목명 + 4대 차량 비교용
+    row[0].write(f"**{spec}**")  # 맨 왼쪽에 항목명
 
-row1 = st.columns(3)
-row2 = st.columns(3)
-
-for col in row1 + row2:
-    tile = col.container(height=120)
-    tile.title(":balloon:")
-
+    for car_idx in range(3):  # 최대 3대 비교
+        if car_idx < len(dummy_data):
+            row[car_idx + 1].write(dummy_data[car_idx][idx])
+        else:
+            row[car_idx + 1].write("-")  # 데이터 없으면 비워두기
 #
 #
 # # 비교 영역
