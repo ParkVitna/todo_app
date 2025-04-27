@@ -111,9 +111,12 @@ def select_car_dialog(index):
 # 스펙별로 한 줄씩 그리기
 title, car1, car2, car3 = st.columns(4, vertical_alignment='bottom')
 
-car1.image(st.session_state.get(f'selected_image_1'))
-car2.image(st.session_state.get(f'selected_image_2'))
-car3.image(st.session_state.get(f'selected_image_3'))
+car1.image("https://static.streamlit.io/examples/cat.jpg")
+car2.image("https://static.streamlit.io/examples/dog.jpg")
+car3.image("https://static.streamlit.io/examples/owl.jpg")
+# car1.image(st.session_state.get(f'selected_image_1'))
+# car2.image(st.session_state.get(f'selected_image_2'))
+# car3.image(st.session_state.get(f'selected_image_3'))
 
 for idx, spec in enumerate(specs):
     row = st.columns(4)  # 항목명 + 3대 차량 비교용
