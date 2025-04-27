@@ -1,7 +1,7 @@
 import streamlit as st
 
 st.title('🚗 Easy Compare My CAR 🚜')
-st.header()
+st.header('')
 
 # 더미 데이터
 # 차량 이미지 예시
