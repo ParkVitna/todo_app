@@ -1,20 +1,15 @@
 import streamlit as st
 
 st.title('🚗 Easy Compare My CAR 🚜')
+st.header()
 
 # 더미 데이터
 # 차량 이미지 예시
 example_car_image = 'https://media.istockphoto.com/id/1150931120/ko/%EC%82%AC%EC%A7%84/%EC%9D%BC%EB%B0%98-%EC%BB%B4%ED%8C%A9%ED%8A%B8-%ED%99%94%EC%9D%B4%ED%8A%B8-%EC%9E%90%EB%8F%99%EC%B0%A8-%EC%A0%84%EB%A9%B4-%EC%B8%A1%EB%A9%B4%EC%9D%98-3d-%EA%B7%B8%EB%A6%BC.jpg?s=612x612&w=0&k=20&c=evtR5CTByAQWEj-b_C0CeAyT6LQJlCxvo8J702KEhaI='
 
 # 차량 데이터 예시
-dummy_data1_car_brand = 'brand1'
-dummy_data1_car_model = 'model1'
 dummy_data1 =  ["세단", "아반떼", "준중형", "2023-01", "가솔린", "15km/L", "500km", "5성"]
-dummy_data2_car_brand = 'brand2'
-dummy_data2_car_model = 'model2'
 dummy_data2 =  ["SUV", "투싼", "중형", "2022-08", "디젤", "13km/L", "600km", "4성"]
-dummy_data3_car_brand = 'brand3'
-dummy_data3_car_model = 'model3'
 dummy_data3 =  ["해치백", "i30", "소형", "2021-06", "가솔린", "14km/L", "450km", "4.5성"]
 
 select_car_dialog_data = {
@@ -33,10 +28,17 @@ for i in range(3):
     if f'open_dialog_{i}' not in st.session_state:
         st.session_state[f'open_dialog_{i}'] = False
 
-# 차량 선택
-# st.session_state['todos'].append(dummy_data1)
-# st.session_state['todos'].append(dummy_data2)
-# st.session_state['todos'].append(dummy_data3)
+# selected_brand_i 초기화
+for i in range(3):
+    if f'selected_brand_{i}' not in st.session_state:
+        st.session_state[f'selected_brand_{i}'] = False
+
+# selected_image_i 초기화
+for i in range(3):
+    if f'selected_image_{i}' not in st.session_state:
+        st.session_state[f'selected_image_{i}'] = False
+
+
 
 # 비교 목록 리스트
 specs = ['선택', '차량명', '차종', '출시일', '연료', '연비', '주행거리', '안정성', '가격']
@@ -76,15 +78,19 @@ def select_car_dialog(index):
 
         if st.button('선택 완료', key=f'confirm_select_{index}'):
             # 더미 데이터 매핑
-            # Todo 데이터 반복문으로 매핑
+            # Todo 데이터 쿼리로 매핑, 이미지 매핑
             if model == "아반떼":
                 car_data = [f'{selected_brand} {model}'] + dummy_data1
+                st.session_state[f'selected_image_{index}'] = example_car_image
             elif model == "투싼":
                 car_data = [f'{selected_brand} {model}'] + dummy_data2
+                st.session_state[f'selected_image_{index}'] = example_car_image
             elif model == "i30":
                 car_data = [f'{selected_brand} {model}'] + dummy_data3
+                st.session_state[f'selected_image_{index}'] = example_car_image
             else:
                 car_data = [f'{selected_brand} {model}'] + ["-", "-", "-", "-", "-", "-", "-", "-"]
+                st.session_state[f'selected_image_{index}'] = example_car_image
 
             # 선택한 차량 정보를 해당 index 위치에 넣음
             if len(st.session_state.choosed_cars) > index:
@@ -103,10 +109,11 @@ def select_car_dialog(index):
 # UI START
 
 # 스펙별로 한 줄씩 그리기
-title, car1, car2, car3 = st.columns(4)
-car1.image("https://static.streamlit.io/examples/cat.jpg")
-car2.image("https://static.streamlit.io/examples/dog.jpg")
-car3.image("https://static.streamlit.io/examples/owl.jpg")
+title, car1, car2, car3 = st.columns(4, vertical_alignment='bottom')
+
+car1.image(st.session_state.get(f'selected_image_1'))
+car2.image(st.session_state.get(f'selected_image_2'))
+car3.image(st.session_state.get(f'selected_image_3'))
 
 for idx, spec in enumerate(specs):
     row = st.columns(4)  # 항목명 + 3대 차량 비교용
