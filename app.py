@@ -44,13 +44,13 @@ def clicked_select_car_button(i):
 # 차량 선택 다이얼로그
 @st.dialog("차량을 선택해주세요.")
 def select_car_dialog():
-    if st.session_state.get(f'open_dialog_{i}', True):
-        st.write(f'브랜드 선택')
+    # if st.session_state.get(f'open_dialog_{i}', True):
+    st.write(f'브랜드 선택')
 
-        st.write(f'모델')
+    st.write(f'모델')
 
-        # 닫기
-        st.session_state[f'open_dialog_{i}'] = False
+    # 닫기
+    # st.session_state[f'open_dialog_{i}'] = False
 
 
 
