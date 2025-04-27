@@ -33,9 +33,6 @@ for i in range(3):
     if f'open_dialog_{i}' not in st.session_state:
         st.session_state[f'open_dialog_{i}'] = False
 
-if 'choosed_cars' not in st.session_state:
-    st.session_state.choosed_cars = [] #Car 클래스 객체
-
 # 차량 선택
 # st.session_state['todos'].append(dummy_data1)
 # st.session_state['todos'].append(dummy_data2)
@@ -77,6 +74,25 @@ def select_car_dialog(index):
         )
 
         if st.button('선택 완료', key=f'confirm_select_{index}'):
+            # 더미 데이터 매핑
+            if model == "아반떼":
+                car_data = [f'{selected_brand} {model}'] + dummy_data1
+            elif model == "쏘나타":
+                car_data = [f'{selected_brand} {model}'] + dummy_data2
+            elif model == "투싼":
+                car_data = [f'{selected_brand} {model}'] + dummy_data3
+            else:
+                car_data = [f'{selected_brand} {model}'] + ["-", "-", "-", "-", "-", "-", "-", "-"]
+
+            # 선택한 차량 정보를 해당 index 위치에 넣음
+            if len(st.session_state.choosed_cars) > index:
+                st.session_state.choosed_cars[index] = car_data
+            else:
+                # 리스트 크기가 index보다 작으면 빈 칸 채우고 추가
+                while len(st.session_state.choosed_cars) < index:
+                    st.session_state.choosed_cars.append(["-"] * len(specs))
+                st.session_state.choosed_cars.append(car_data)
+
             # 닫기
             st.session_state[f'open_dialog_{index}'] = False
 
@@ -96,7 +112,10 @@ for idx, spec in enumerate(specs):
             row[car_idx + 1].button('차량 선택', key=f'select_button_{car_idx}', on_click=clicked_select_car_button, args=(car_idx,))
 
         if car_idx < len(st.session_state.choosed_cars):
-            row[car_idx + 1].write(st.session_state.choosed_cars[car_idx][idx + 1])
+            try:
+                row[car_idx + 1].write(st.session_state.choosed_cars[car_idx][idx + 1])
+            except IndexError:
+                row[car_idx + 1].write("-")
         else:
             row[car_idx + 1].write("-")  # 데이터 없으면 비워두기
 
