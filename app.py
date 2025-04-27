@@ -16,7 +16,7 @@ if 'choosed_cars' not in st.session_state:
 
 # open_dialog_i 초기화
 for i in range(3):
-    if st.session_state[f'open_dialog_{i}'] not in st.session_state:
+    if f'open_dialog_{i}' not in st.session_state:
         st.session_state[f'open_dialog_{i}'] = False
 
 if 'choosed_cars' not in st.session_state:
@@ -32,9 +32,7 @@ specs = ['선택', '차량명', '차종', '출시일', '연료', '연비', '주�
 
 # 차량 선택 버튼 클릭 함수
 def clicked_select_car_button(i):
-    st.session_state[f'open_dialog_{car_idx}'] = not st.session_state[f'open_dialog_{i}']
-
-
+    st.session_state[f'open_dialog_{i}'] = True
 
 # UI START
 
@@ -46,12 +44,41 @@ for idx, spec in enumerate(specs):
     for car_idx in range(3):  # 최대 3대 비교
         # 차량 선택 버튼
         if idx == 0:
-            row[car_idx + 1].button('차량 선택', key=f'select_button_{car_idx}', on_click=clicked_select_car_button(car_idx))
+            row[car_idx + 1].button('차량 선택', key=f'select_button_{car_idx}', on_click=clicked_select_car_button, args=(car_idx,))
 
         if car_idx < len(st.session_state.choosed_cars):
             row[car_idx + 1].write(st.session_state.choosed_cars[car_idx][idx + 1])
         else:
             row[car_idx + 1].write("-")  # 데이터 없으면 비워두기
+
+
+# 차량 선택 다이얼로그
+for i in range(3):
+    if st.session_state.get(f'open_dialog_{i}', False):
+        with st.modal(f"차량 {i+1} 선택"):
+            car_choice = st.selectbox("차량을 선택하세요", ["아반떼", "투싼", "i30"], key=f'car_choice_{i}')
+            if st.button("선택 완료", key=f'confirm_button_{i}'):
+                # 선택된 차량 추가
+                if car_choice == "아반떼":
+                    selected = dummy_data1
+                elif car_choice == "투싼":
+                    selected = dummy_data2
+                elif car_choice == "i30":
+                    selected = dummy_data3
+                else:
+                    selected = None
+
+                if selected:
+                    # 선택된 차량이 있으면 세팅
+                    if len(st.session_state.choosed_cars) > i:
+                        st.session_state.choosed_cars[i] = selected
+                    else:
+                        # 채워넣기
+                        while len(st.session_state.choosed_cars) <= i:
+                            st.session_state.choosed_cars.append(None)
+                        st.session_state.choosed_cars[i] = selected
+
+                st.session_state[f'open_dialog_{i}'] = False  # 모달 닫기
 
 
 # 초기화 버튼
